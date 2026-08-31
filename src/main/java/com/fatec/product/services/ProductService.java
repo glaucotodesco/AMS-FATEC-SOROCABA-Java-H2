@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fatec.product.dtos.ProductResponse;
 import com.fatec.product.entities.Product;
+import com.fatec.product.mappers.ProductMapper;
 import com.fatec.product.repositories.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -19,8 +21,11 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public List<Product> findAll() {
-        return repository.findAll();
+    public List<ProductResponse> findAll() {
+        return repository.findAll()
+                         .stream()
+                         .map(ProductMapper::toDTO)
+                         .toList();
     }
 
     public Product findById(Long id) {
